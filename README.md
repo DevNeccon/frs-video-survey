@@ -37,7 +37,7 @@ The application allows creating and publishing surveys with exactly five Yes/No 
   - Exactly one face → allowed
 - Per-question capture:
   - Face snapshot (PNG)
-  - Video segment (WebM)
+  - Video segment (MP4)
   - Visibility score (0–100)
 - Metadata capture:
   - IP address
@@ -53,70 +53,51 @@ The application allows creating and publishing surveys with exactly five Yes/No 
 
 ---
 
-## Project Structure
-
-frs-video-survey/
-├── backend/
-│ ├── app/
-│ │ ├── api/
-│ │ ├── core/
-│ │ ├── models/
-│ │ ├── schemas/
-│ │ ├── services/
-│ │ └── utils/
-│ ├── Dockerfile
-│ └── requirements.txt
-├── frontend/
-│ ├── app/
-│ │ └── survey/[surveyId]/
-│ ├── lib/
-│ ├── Dockerfile
-│ └── package.json
-├── docker-compose.yml
-└── README.md
-
----
-
 ## How to Run the Project
 
 ### Prerequisites
 - Docker Desktop
-- Docker Compose
 
 ### Start the application
 
+```bash
 docker compose up --build
+```
 
 Services will be available at:
 
-- Frontend: http://localhost:3000
+- Frontend: `http://localhost:3000`
 
-- Backend API: http://localhost:8000
+- Backend API: `http://localhost:8000`
 
-- Backend Docs (Swagger): http://localhost:8000/docs
+- Backend Docs (Swagger): `http://localhost:8000/docs`
 
 ### Creating and Publishing a Survey (Admin Flow)
 
 Surveys are created via the backend API.
 
-1. Create a survey
+#### 1. Create a survey
 
-POST /api/surveys:
+`POST /api/surveys`
+```
 { "title": "Demo Survey" }
+```
 
-2. Add exactly 5 questions
+#### 2. Add exactly 5 questions
 
-POST /api/surveys/{survey_id}/questions:
+`POST /api/surveys/{survey_id}/questions`
+```
 { "question_text": "Your question text here" }
+```
 (Repeat this 5 times)
 
-3. Publish the survey
+#### 3. Publish the survey
 
-POST /api/surveys/{survey_id}/publish
+`POST /api/surveys/{survey_id}/publish`
 
 Once published, the survey becomes available at:
 
-http://localhost:3000/survey/{survey_id}
+`http://localhost:3000/survey/{survey_id}`
 
 
 ### Completing a Survey (User Flow)
@@ -127,22 +108,23 @@ http://localhost:3000/survey/{survey_id}
 
 3. For each question:
 
-- Ensure exactly one face is visible
+   - Ensure exactly one face is visible
 
-- Answer Yes or No
+   - Answer Yes or No
 
 4. After the fifth question:
 
-- Survey is completed
+   - Survey is completed
 
-- Overall visibility score is computed
+   - Overall visibility score is computed
 
-- Export ZIP can be downloaded
+   - Export ZIP can be downloaded
 
 ### Export ZIP Structure
 
 The export endpoint produces a ZIP file with the following structure:
 
+```pgsql
 metadata.json
 videos/
   full_session.mp4
@@ -152,9 +134,10 @@ images/
   q3_face.png
   q4_face.png
   q5_face.png
+```
+`metadata.json` contains submission metadata, question responses, per-question scores, and the overall score.
 
-- metadata.json contains submission metadata, question responses, per-question scores, and the overall score.
-
+---
 
 ## Notes on Design Decisions
 
@@ -166,18 +149,22 @@ images/
 
 - Tables are normalized for clarity and maintainability.
 
-- Database tables are created automatically on startup for simplicity in this take-home context.
+- Database tables are created automatically on startup for simplicity.
 
+---
 
 ## Running on a Fresh Machine
 
 You can run the project with:
 
+```bash
 git clone <repository>
 cd frs-video-survey
 docker compose up --build
-
+```
 No additional setup required.
 
-AUTHOR
-SHUBHANG TIWARI
+---
+
+## Author
+- [@DevNeccon](https://github.com/DevNeccon)
