@@ -1,4 +1,3 @@
-// frontend/lib/recorder.ts
 export type RecorderHandle = {
   stop: () => Promise<Blob>;
 };

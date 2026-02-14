@@ -58,7 +58,7 @@ def build_export_zip(db: Session, submission_id: int, media_root: str) -> Path:
         .all()
     )
 
-    # Build metadata.json structure required by spec :contentReference[oaicite:6]{index=6}
+    # Build metadata.json structure required by spec
     responses = []
     # Map question_id -> question text
     qmap = {q.id: q.question_text for q in survey.questions}
@@ -92,7 +92,7 @@ def build_export_zip(db: Session, submission_id: int, media_root: str) -> Path:
     # For export we MUST produce:
     # /metadata.json
     # /videos/full_session.mp4
-    # /images/q1_face.png ... q5_face.png :contentReference[oaicite:7]{index=7}
+    # /images/q1_face.png ... q5_face.png
     with tempfile.TemporaryDirectory() as tmp:
         tmp_root = Path(tmp)
         out_images = tmp_root / "images"

@@ -1,4 +1,3 @@
-// frontend/lib/faceDetection.ts
 import { FaceDetector, FilesetResolver } from "@mediapipe/tasks-vision";
 
 export type FaceStatus =

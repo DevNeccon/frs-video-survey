@@ -21,7 +21,7 @@ def add_question(survey_id: int, payload: QuestionCreate, db: Session = Depends(
     if not s:
         raise HTTPException(404, "Survey not found")
 
-    # enforce max 5 questions (spec says exactly 5 total) :contentReference[oaicite:8]{index=8}
+    # enforce max 5 questions (spec says exactly 5 total)
     if len(s.questions) >= 5:
         raise HTTPException(400, "Survey already has 5 questions")
 

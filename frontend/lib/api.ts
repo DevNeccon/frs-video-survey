@@ -1,4 +1,3 @@
-// frontend/lib/api.ts
 export type SurveyQuestion = {
   id: number;
   question_text: string;

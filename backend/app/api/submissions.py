@@ -22,7 +22,7 @@ async def start_submission(survey_id: int, request: Request, db: Session = Depen
     if not survey or not survey.is_active:
         raise HTTPException(404, "Active survey not found")
 
-    # Metadata requirements: IP, UA parsed device/browser/os, timestamp server, IP-based location :contentReference[oaicite:9]{index=9}
+    # Metadata requirements: IP, UA parsed device/browser/os, timestamp server, IP-based location
     ip = request.client.host if request.client else None
     ua = request.headers.get("user-agent")
     device, browser, os = parse_user_agent(ua)
@@ -104,7 +104,7 @@ def complete_submission(submission_id: int, db: Session = Depends(get_db)):
     if not sub:
         raise HTTPException(404, "Submission not found")
 
-    # compute overall_score as average of 5 face_scores (simple and acceptable)
+    # compute overall_score as average of 5 face_scores
     answers = db.query(SurveyAnswer).filter(SurveyAnswer.submission_id == submission_id).all()
     if len(answers) < 5:
         raise HTTPException(400, "Submission must have 5 answers before completing")
@@ -118,7 +118,7 @@ def complete_submission(submission_id: int, db: Session = Depends(get_db)):
 
 @router.get("/api/submissions/{submission_id}/export")
 def export_submission(submission_id: int, db: Session = Depends(get_db)):
-    # Must return ZIP containing metadata.json, /videos/full_session.mp4, /images/q1_face.png..q5 :contentReference[oaicite:10]{index=10}
+    # return ZIP containing metadata.json, /videos/full_session.mp4, /images/q1_face.png..q5
     try:
         zip_path = build_export_zip(db, submission_id, settings.media_dir)
     except Exception as e:
